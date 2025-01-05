@@ -1,0 +1,26 @@
+name: pihole-unbound
+
+services:
+  pihole-unbound:
+    image: pihole-unbound:latest
+    hostname: pihole-unbound
+    build: .
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "${PIHOLE_WEBPORT:-80}:80/tcp"
+    environment:
+      TZ: "${TZ}"
+      WEBPASSWORD: "${WEBPASSWORD}"
+      PIHOLE_DNS_: "${PIHOLE_DNS_}"
+      FTLCONF_LOCAL_IPV4: "${FTLCONF_LOCAL_IPV4}"
+    volumes:
+      - pihole_data:/etc/pihole
+      - dnsmasq_data:/etc/dnsmasq.d
+      - unbound_data:/etc/unbound
+    restart: unless-stopped
+
+volumes:
+  pihole_data:
+  dnsmasq_data:
+  unbound_data:

@@ -1,0 +1,35 @@
+# Ignore Docker files
+*.log
+*.pid
+*.swp
+*.swo
+*.bak
+*.tmp
+*.old
+
+# Ignore Docker Compose files
+docker-compose.override.yml
+docker-compose.override.yaml
+
+# Ignore Docker build files
+**/Dockerfile
+**/Dockerfile.*
+
+# Ignore Docker volumes
+volumes/
+
+# Ignore Docker images
+*.tar
+*.img
+
+# Ignore Docker containers
+*.container
+
+# Ignore Docker networks
+*.network
+
+# Ignore Docker Compose environment files
+.env
+
+# Ignore Docker Compose logs
+docker-compose.logs
