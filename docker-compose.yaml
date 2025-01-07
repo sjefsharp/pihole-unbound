@@ -3,12 +3,15 @@ name: pihole-unbound
 services:
   pihole-unbound:
     image: pihole-unbound:latest
+    container_name: pihole-unbound
     hostname: pihole-unbound
     build: .
     ports:
       - "53:53/tcp"
       - "53:53/udp"
       - "${PIHOLE_WEBPORT:-80}:80/tcp"
+      - "5335:5335/tcp"
+      - "5335:5335/udp"
     environment:
       TZ: "${TZ}"
       WEBPASSWORD: "${WEBPASSWORD}"
