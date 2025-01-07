@@ -1,12 +1,11 @@
 #!/bin/bash
+UNBOUND_ANCHOR_EXEC=/usr/sbin/unbound-anchor
 
-# Path to the Unbound executable
+$UNBOUND_ANCHOR_EXEC -a /var/lib/unbound/root.key
+
 UNBOUND_EXEC=/usr/sbin/unbound
-
-# Start Unbound
 $UNBOUND_EXEC -d
 
-# Check if Unbound started successfully
 if [ $? -eq 0 ]; then
     echo "Unbound started successfully."
 else
