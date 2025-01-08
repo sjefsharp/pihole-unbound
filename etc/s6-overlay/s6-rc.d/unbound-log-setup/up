@@ -1,0 +1,7 @@
+#!/usr/bin/execlineb -P
+with-contenv bash -c '
+mkdir -p /var/log/unbound
+touch /var/log/unbound/unbound.log
+chown unbound /var/log/unbound/unbound.log
+echo "Unbound log setup complete."
+'

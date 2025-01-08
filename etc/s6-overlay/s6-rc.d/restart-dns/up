@@ -1,0 +1,6 @@
+#!/usr/bin/execlineb -P
+with-contenv bash -c '
+set -e
+echo "Restarting Pi-hole DNS service..."
+pihole restartdns
+'
