@@ -1,21 +1,17 @@
 FROM pihole/pihole:latest
 
 RUN apt-get update && \
-    apt-get install -y unbound wget && \
-    apt-get clean && \
+    apt-get install -y --no-install-recommends unbound curl && \
     rm -rf /var/lib/apt/lists/*
 
 COPY etc/unbound/unbound.conf.d/pi-hole.conf /etc/unbound/unbound.conf.d/pi-hole.conf
 COPY etc/dnsmasq.d/99-edns.conf /etc/dnsmasq.d/99-edns.conf
+COPY etc/s6-overlay/s6-rc.d/ /etc/s6-overlay/s6-rc.d/
 
-RUN mkdir -p /var/log/unbound
-RUN touch /var/log/unbound/unbound.log
-RUN chown unbound /var/log/unbound/unbound.log
+RUN find /etc/s6-overlay/s6-rc.d/ -name run -exec chmod +x {} \; && \
+    find /etc/s6-overlay/s6-rc.d/ -type d -exec touch {}/up \; || true
 
-RUN curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.cache
-
-RUN mkdir -p /etc/services.d/unbound
-COPY unbound-run /etc/services.d/unbound/run
-RUN chmod +x /etc/services.d/unbound/run
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+  CMD dig +short @127.0.0.1 -p 5335 google.com > /dev/null || exit 1
 
 ENTRYPOINT ["/s6-init"]

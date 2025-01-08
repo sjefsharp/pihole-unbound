@@ -17,13 +17,20 @@ services:
       WEBPASSWORD: "${WEBPASSWORD}"
       PIHOLE_DNS_: "${PIHOLE_DNS_}"
       FTLCONF_LOCAL_IPV4: "${FTLCONF_LOCAL_IPV4}"
+      ADLISTS: "${ADLISTS}"
+      LOCALDNS: "${LOCALDNS}"
+      CNAME_ENTRIES: "${CNAME_ENTRIES}"
     volumes:
       - pihole_data:/etc/pihole
       - dnsmasq_data:/etc/dnsmasq.d
       - unbound_data:/etc/unbound
+      - unbound_logs:/var/log/unbound
+      - pihole_logs:/var/log/pihole.log
     restart: unless-stopped
 
 volumes:
   pihole_data:
   dnsmasq_data:
   unbound_data:
+  unbound_logs:
+  pihole_logs:
