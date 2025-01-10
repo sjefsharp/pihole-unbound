@@ -20,6 +20,7 @@ services:
       ADLISTS: "${ADLISTS}"
       LOCALDNS: "${LOCALDNS}"
       CNAME_ENTRIES: "${CNAME_ENTRIES}"
+      DNSMASQ_LISTENING: "${DNSMASQ_LISTENING}"
     volumes:
       - pihole_data:/etc/pihole
       - dnsmasq_data:/etc/dnsmasq.d
