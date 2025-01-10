@@ -4,32 +4,6 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Added
-
-- Initial setup of Pi-hole with Unbound integration.
-
-### Changed
-
-- N/A
-
-### Deprecated
-
-- N/A
-
-### Removed
-
-- N/A
-
-### Fixed
-
-- N/A
-
-### Security
-
-- N/A
-
 ## [0.0.1] - 2025-01-05
 
 ### Added
@@ -64,7 +38,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
-- Overhauled part of the solution to adhere to s6 overlay.
+- Back to keep it simple stupid. Looks like we have a working version now.
 
-[Unreleased]: https://github.com/sjefsharp/pihole-unbound/compare/v0.0.3...HEAD
-[0.0.3]: https://github.com/sjefsharp/pihole-unbound/releases/tag/v0.0.3
+[Unreleased]: https://github.com/sjefsharp/pihole-unbound/compare/v0.0.4...HEAD
+[0.0.3]: https://github.com/sjefsharp/pihole-unbound/releases/tag/v0.0.4
