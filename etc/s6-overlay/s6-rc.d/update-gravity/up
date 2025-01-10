@@ -1,1 +1,2 @@
-pihole -g
+#!/command/execlineb
+foreground { bash -e /usr/local/bin/pihole-unbound/update-gravity.sh }

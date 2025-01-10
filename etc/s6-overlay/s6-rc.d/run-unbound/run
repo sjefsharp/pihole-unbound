@@ -1,0 +1,2 @@
+#!/command/with-contenv bash
+/usr/local/bin/pihole-unbound/run-unbound.sh

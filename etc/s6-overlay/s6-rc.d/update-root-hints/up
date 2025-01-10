@@ -1,12 +1,2 @@
-#!/usr/bin/execlineb -P
-with-contenv bash -c '
-ROOT_HINTS_FILE="/var/lib/unbound/root.hints"
-
-echo "Updating root.hints file..."
-if curl -o "$ROOT_HINTS_FILE" https://www.internic.net/domain/named.cache; then
-    echo "Successfully updated root.hints file."
-else
-    echo "Failed to update root.hints file."
-    exit 1
-fi
-'
+#!/command/execlineb
+foreground { bash -e /usr/local/bin/pihole-unbound/update-root-hints.sh }

@@ -5,13 +5,8 @@ UNBOUND_ANCHOR_EXEC=/usr/sbin/unbound-anchor
 UNBOUND_EXEC=/usr/sbin/unbound
 UNBOUND_ROOT_KEY=/var/lib/unbound/root.key
 
-# Update DNSSEC root keys
-echo "Updating DNSSEC root keys..."
+echo "PIHOLE-UNBOUND [i] Updating DNSSEC root keys..."
 if ! $UNBOUND_ANCHOR_EXEC -a "$UNBOUND_ROOT_KEY"; then
-    echo "Failed to update DNSSEC root keys."
+    echo "PIHOLE-UNBOUND [i] Failed to update DNSSEC root keys." >&2
     exit 1
 fi
-
-# Start Unbound in the foreground
-echo "Starting Unbound service..."
-exec $UNBOUND_EXEC -d

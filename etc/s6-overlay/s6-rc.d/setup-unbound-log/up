@@ -1,0 +1,2 @@
+#!/command/execlineb
+foreground { bash -e /usr/local/bin/pihole-unbound/setup-unbound-log.sh }
