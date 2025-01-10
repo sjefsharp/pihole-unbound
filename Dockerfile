@@ -7,9 +7,6 @@ RUN apt-get update && \
 COPY etc/unbound/unbound.conf.d/pi-hole.conf /etc/unbound/unbound.conf.d/pi-hole.conf
 COPY etc/dnsmasq.d/99-edns.conf /etc/dnsmasq.d/99-edns.conf
 COPY etc/s6-overlay/s6-rc.d/ /etc/s6-overlay/s6-rc.d/
-COPY usr/local/bin/pihole-unbound/ /usr/local/bin/pihole-unbound/
-
-RUN chmod +x /usr/local/bin/pihole-unbound/*.sh
 
 ENTRYPOINT ["/s6-init"]
 
