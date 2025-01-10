@@ -33,3 +33,6 @@ volumes/
 
 # Ignore Docker Compose logs
 docker-compose.logs
+
+# Archive files
+.DS_Store
