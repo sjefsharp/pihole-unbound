@@ -4,6 +4,7 @@ Pi-hole as All-Around DNS Solution in a Docker container.
 
 Example .env:
 
+```MARKDOWN
 PIHOLE_WEBPORT=8080
 TZ=Europe/Amsterdam
 WEBPASSWORD=your_password
@@ -13,3 +14,4 @@ ADLISTS="https://example.com/adlist1.txt=First=adlist,https://example.com/adlist
 LOCALDNS="192.168.1.1=router.local,192.168.1.100=myserver.local"
 CNAME_ENTRIES="example.com=example.local,example2.com=example2.local"
 DNSMASQ_LISTENING="all"
+```
