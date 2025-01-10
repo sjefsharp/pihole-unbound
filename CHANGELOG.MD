@@ -59,3 +59,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Unreleased]: https://github.com/sjefsharp/pihole-unbound/compare/v0.0.3...HEAD
 [0.0.3]: https://github.com/sjefsharp/pihole-unbound/releases/tag/v0.0.3
+
+## [0.0.4] - 2025-01-08
+
+### Changed
+
+- Overhauled part of the solution to adhere to s6 overlay.
+
+[Unreleased]: https://github.com/sjefsharp/pihole-unbound/compare/v0.0.3...HEAD
+[0.0.3]: https://github.com/sjefsharp/pihole-unbound/releases/tag/v0.0.3

@@ -1,0 +1,123 @@
+#!/command/with-contenv bash
+set -e
+
+initialize_file() {
+    local file=$1
+    : > "$file"
+}
+
+add_unique_entry() {
+    local entry=$1
+    local file=$2
+    if ! grep -Fxq "$entry" "$file"; then
+        echo "$entry" >> "$file"
+    fi
+}
+
+update_cname_records() {
+    local cname_file="/etc/dnsmasq.d/05-pihole-custom-cname.conf"
+    initialize_file "$cname_file"
+    IFS=","
+    for entry in $CNAME_ENTRIES; do
+        local alias="${entry%%=*}"
+        local target="${entry#*=}"
+        add_unique_entry "cname=$alias,$target" "$cname_file"
+    done
+    echo "PIHOLE-UNBOUND [i] CNAME records update complete."
+}
+
+update_local_dns() {
+    local localdns_file="/etc/pihole/custom.list"
+    initialize_file "$localdns_file"
+    IFS=","
+    for entry in $LOCALDNS; do
+        local ip="${entry%%=*}"
+        local domain="${entry#*=}"
+        add_unique_entry "$ip $domain" "$localdns_file"
+    done
+    echo "PIHOLE-UNBOUND [i] Local DNS entries update complete."
+}
+
+update_adlists() {
+    IFS=","
+    for entry in $ADLISTS; do
+        local url="${entry%%=*}"
+        local comment="${entry#*=}"
+        echo "Toevoegen: $url met opmerking: $comment"
+        sqlite3 /etc/pihole/gravity.db "INSERT OR IGNORE INTO adlist (address, comment) VALUES ('$url', '$comment');"
+    done
+    echo "PIHOLE-UNBOUND [i] Adlists added to Pi-hole gravity database."
+}
+
+update_dnssec_keys() {
+    local unbound_anchor_exec="/usr/sbin/unbound-anchor"
+    local unbound_root_key="/var/lib/unbound/root.key"
+    echo "PIHOLE-UNBOUND [i] Updating DNSSEC root keys..."
+    if ! $unbound_anchor_exec -a $unbound_root_key; then
+        echo "PIHOLE-UNBOUND [i] Failed to update DNSSEC root keys." >&2
+        exit 1
+    fi
+}
+
+restart_dns_service() {
+    echo "PIHOLE-UNBOUND [i] Restarting Pi-hole DNS service..."
+    if pihole restartdns; then
+        echo "PIHOLE-UNBOUND [i] DNS service restarted successfully."
+    else
+        echo "PIHOLE-UNBOUND [i] Failed to restart DNS service." >&2
+        exit 1
+    fi
+}
+
+setup_unbound_log() {
+    local log_dir="/var/log/unbound"
+    local log_file="$log_dir/unbound.log"
+    echo "PIHOLE-UNBOUND [i] Setting up Unbound log directory and file..."
+    mkdir -p "$log_dir"
+    touch "$log_file"
+    chown unbound:unbound "$log_file"
+    if [ -f "$log_file" ]; then
+        echo "PIHOLE-UNBOUND [i] Unbound log setup complete."
+    else
+        echo "PIHOLE-UNBOUND [i] Failed to set up Unbound log." >&2
+        exit 1
+    fi
+}
+
+update_gravity() {
+    echo "PIHOLE-UNBOUND [i] Updating Pi-hole gravity lists..."
+    if pihole -g; then
+        echo "PIHOLE-UNBOUND [i] Gravity update complete."
+    else
+        echo "PIHOLE-UNBOUND [i] Failed to update gravity." >&2
+        exit 1
+    fi
+}
+
+update_root_hints() {
+    local root_hints_file="/var/lib/unbound/root.hints"
+    local root_hints_url="https://www.internic.net/domain/named.cache"
+    echo "PIHOLE-UNBOUND [i] Updating root hints file..."
+    if curl -o "$root_hints_file" "$root_hints_url"; then
+        echo "PIHOLE-UNBOUND [i] Root hints file updated successfully."
+    else
+        echo "PIHOLE-UNBOUND [i] Failed to update root hints file." >&2
+        exit 1
+    fi
+}
+
+start_unbound() {
+    local unbound_exec="/usr/sbin/unbound"
+    echo "PIHOLE-UNBOUND [i] Starting Unbound service..."
+    exec $unbound_exec -d
+}
+
+update_root_hints
+update_local_dns
+update_cname_records
+update_adlists
+update_dnssec_keys
+update_gravity
+restart_dns_service
+setup_unbound_log
+start_unbound
